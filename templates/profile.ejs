@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #eeb31d;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #e3f2fd;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+        }
+        h1 {
+            text-align: center;
+            color: #000000;
+            font-size: 2.5em;
+        }
+        .profile {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .profile-item {
+            display: flex;
+            align-items: center;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .profile-item i {
+            font-size: 1.5em;
+            margin-right: 15px;
+            color: #eeb31d;
+        }
+        .profile-item span {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .profile-item p {
+            margin: 0;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #686868;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        .back-btn:hover {
+            background-color: #3d3d3d;
+        }
+        .notice {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 8px;
+            color: #856404;
+            text-align: center;
+            font-size: 1.2em; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Profile</h1>
+        <div class="profile">
+            <div class="profile-item">
+                <i class="fas fa-user"></i>
+                <span>First Name:</span> <p><%= user.firstName %></p>
+            </div>
+            <div class="profile-item">
+                <i class="fas fa-user-tag"></i>
+                <span>Last Name:</span> <p><%= user.lastName %></p>
+            </div>
+            <div class="profile-item">
+                <i class="fas fa-globe"></i>
+                <span>Country:</span> <p><%= user.country %></p>
+            </div>
+            <div class="profile-item">
+                <i class="fas fa-city"></i>
+                <span>City:</span> <p><%= user.city %></p>
+            </div>
+            <div class="profile-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Address:</span> <p><%= user.address %></p>
+            </div>
+            <div class="profile-item">
+                <i class="fas fa-envelope"></i>
+                <span>Email:</span> <p><%= user.email %></p>
+            </div>
+            <div class="profile-item">
+                <i class="fas fa-user-circle"></i>
+                <span>Username:</span> <p><%= user.username %></p>
+            </div>
+        </div>
+        <div class="notice">
+            <p>Για οποιαδήποτε αλλαγή στοιχείων, επικοινωνήστε με έναν από τους διαχειριστές μας.</p>
+        </div>
+        <a href="/user/dashboard" class="back-btn">Go Back</a>
+    </div>
+</body>
+</html>

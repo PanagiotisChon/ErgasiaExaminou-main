@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Registration Requests</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 1000px;
+            text-align: center;
+            margin: 40px auto;
+        }
+        h1 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #333;
+            color: #fff;
+            font-size: 18px;
+        }
+        td {
+            background-color: #fafafa;
+            font-size: 16px;
+        }
+        select {
+            padding: 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-family: 'Times New Roman', Times, serif;
+            border: none;
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .message {
+            font-size: 18px;
+            color: #666;
+            margin-top: 20px;
+        }
+        .action-buttons form {
+            display: inline;
+        }
+        .go-back-btn {
+            font-family: 'Times New Roman', Times, serif;
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .go-back-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Registration Requests</h1>
+
+        <% if (registrationRequests.length > 0) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Username</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% registrationRequests.forEach(function(request) { %>
+                        <tr>
+                            <td><%= request.firstName %></td>
+                            <td><%= request.lastName %></td>
+                            <td><%= request.email %></td>
+                            <td><%= request.username %></td>
+                            <td class="action-buttons">
+                                <form action="/admin/manage-registration-request/<%= request._id %>" method="POST">
+                                    <label for="role">Role:</label>
+                                    <select name="role" id="role">
+                                        <option value="user">User</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                                    <button type="submit" name="action" value="accept">Accept</button>
+                                </form>
+                                <form action="/admin/manage-registration-request/<%= request._id %>" method="POST">
+                                    <button type="submit" name="action" value="reject">Reject</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } %>
+        
+        <% if (flashMessage) { %>
+            <div class="flash-message <%= flashMessage.type %>">
+                <%= flashMessage.text %>
+            </div>
+            <script>
+                setTimeout(function () {
+                    const flashMessage = document.querySelector('.flash-message');
+                    if (flashMessage) {
+                        flashMessage.style.display = 'none';
+                    }
+                }, 5000);
+            </script>
+        <% } %>
+        
+        <button class="go-back-btn" onclick="window.location.href='/admin/dashboard'">Back to Dashboard</button>
+    </div>
+
+</body>
+</html>

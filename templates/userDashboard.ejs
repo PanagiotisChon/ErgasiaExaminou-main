@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #ddd05d;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background-color: rgb(24, 24, 24);
+            color: white;
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+            border-bottom: 2px solid #ddd;
+            position: relative;
+        }
+        h1 {
+            color: #eeb31d;
+            margin: 0;
+            font-size: 2em;
+        }
+        h2 {
+            color: #333;
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+        .dashboard {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            width: 80%;
+            max-width: 900px;
+            text-align: center;
+        }
+        /* Hamburger icon styles */
+        .hamburger-icon {
+            margin-left: 20px;
+            margin-top: 5px;
+            position: absolute;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .hamburger-icon div {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 5px 0;
+            transition: 0.3s;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #333;
+            color: white;
+            transition: left 0.3s ease;
+            padding-top: 60px;
+            z-index: 9;
+        }
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 1.2em;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .sidebar .closebtn {
+            font-size: 36px;
+            position: absolute;
+            top: 0;
+            right: 25px;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        /* Showing the sidebar when active */
+        .sidebar.open {
+            left: 0;
+        }
+
+        /* Body styling when the sidebar is open */
+        body.open-menu {
+            overflow: hidden;
+        }
+
+        .logout {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            font-size: 1.2em;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout:hover {
+            background-color: #d32f2f;
+        }
+        footer {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #61615c;
+            color: white;
+            width: 100%;
+            text-align: center;
+        }
+        .highlight {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #eeb31d; 
+        }
+        .announcements {
+            margin-top: 30px;
+            width: 80%;
+            max-width: 900px;
+            text-align: left;
+        }
+
+        .announcement-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .announcement-card {
+            background-color: #fff;
+            border: 2px solid #eeb31d;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .announcement-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .announcement-title {
+            font-size: 1.5em;
+            color: #eeb31d;
+            margin-bottom: 10px;
+        }
+        .announcement-content {
+            font-size: 1em;
+            color: #333;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        .announcement-date {
+            font-size: 0.9em;
+            color: #777;
+            display: block;
+            text-align: right;
+        }
+        .no-announcements {
+            font-size: 1.2em;
+            color: #666;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .services-section {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .services-section h2 {
+            text-align: left; 
+            font-size: 1.5em; 
+            border-bottom: 2px solid #eeb31d; 
+            padding-bottom: 10px;
+        }
+        .image-wrapper {
+            display: inline-block;
+            margin: 20px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .image-wrapper:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .image-wrapper img {
+            width: 300px; 
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+            display: block;
+            margin: 0 auto;
+            transition: transform 0.3s ease;
+        }
+        .image-caption {
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #333;
+            font-weight: bold;
+        }
+        footer {
+            width: 100%;
+            background-color: #333; 
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            position: relative; 
+            left: 0;
+            bottom: 0;
+        }
+        .highlight {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #eeb31d; 
+        }
+        .working-hours, .contact-info {
+            margin-top: 20px;
+            text-align: left;
+            padding-left: 10%;
+            padding-right: 10%;
+        }
+        h3 {
+            font-size: 1.3em;
+            color: #eeb31d;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .contact-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .contact-info p {
+            margin: 0;
+        }
+
+        .working-hours p, .contact-info p {
+            font-size: 1em;
+            color: #bbb;
+        }
+
+        .highlight {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #eeb31d; 
+        }
+        .fas {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <!-- Hamburger Icon -->
+        <div class="hamburger-icon" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <h1>Welcome, <span id="username"><%= username %></span></h1>
+    </header>
+
+    <!-- Sidebar Menu -->
+    <div id="sidebar" class="sidebar">
+        <a href="/user/profile">Προφίλ</a>
+        <a href="/user/services">Υπηρεσίες / Κράτηση Προϊόντος</a>
+        <a href="/user/booking-history">Ιστορικό Κρατήσεων</a>
+        <a href="/logout">Αποσύνδεση</a>
+    </div>
+
+    <div class="dashboard">
+        <h2>Ανακοινώσεις</h2>
+        <% if (announcements && announcements.length > 0) { %>
+            <div class="announcement-list">
+                <% announcements.forEach(announcement => { %>
+                    <div class="announcement-card">
+                        <h3 class="announcement-title"><%= announcement.title %></h3>
+                        <p class="announcement-content"><%= announcement.content %></p>
+                        <small class="announcement-date">Ισχύει έως: <%= new Date(announcement.validUntil).toLocaleDateString('el-GR') %></small>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <p class="no-announcements">Δεν υπάρχουν ανακοινώσεις αυτή τη στιγμή.</p>
+        <% } %>
+        <div class="services-section">
+            <h2>Our Services</h2>
+    
+            <div class="image-wrapper" data-name="Reformer Pilates" data-description="<%= programs.find(program => program.name === 'Reformer Pilates').description %>">
+                <img src="https://blog.davidlloyd.co.uk/wp-content/uploads/2024/02/Reformer-Pilates.jpg" alt="Reformer Pilates">
+                <div class="image-caption">Reformer Pilates</div>
+            </div>
+            <div class="image-wrapper" data-name="Yoga" data-description="<%= programs.find(program => program.name === 'Yoga').description %>">
+                <img src="https://alg.edu.au/wp-content/uploads/2024/04/CIV-Yoga-Hero-Image-2.0.jpg" alt="Yoga">
+                <div class="image-caption">Yoga</div>
+            </div>            
+            <div class="image-wrapper" data-name="Zumba" data-description="<%= programs.find(program => program.name === 'Zumba').description %>">
+                <img src="https://jccindy.org/wp-content/uploads/2022/06/zumba-classes-at-jcc.webp" alt="Zumba">
+                <div class="image-caption">Zumba</div>
+            </div>
+            <div class="image-wrapper" data-name="CrossFit" data-description="<%= programs.find(program => program.name === 'CrossFit').description %>">
+                <img src="https://www.physiomart.gr/images/TI-EINAI-TO-CROSSFIT.jpg" alt="CrossFit">
+                <div class="image-caption">CrossFit</div>
+            </div>
+            <div class="image-wrapper" data-name="TRX" data-description="<%= programs.find(program => program.name === 'TRX').description %>">
+                <img src="https://www.physiomart.gr/images/IMANTES-TRX.jpg" alt="TRX">
+                <div class="image-caption">TRX</div>
+            </div>
+            <div class="image-wrapper" data-name="Personal Training" data-description="<%= programs.find(program => program.name === 'Personal Training').description %>">
+                <img src="https://assets.newyorksportsclubs.com/wp-content/uploads/2023/11/09170344/PT_Single-slider-Image-1719-x-960.png" alt="Personal Training">
+                <div class="image-caption">Personal Training</div>
+            </div>
+        </div>
+    </div>
+    <footer>        
+        <div class="working-hours">
+            <h3>Ωράριο Λειτουργίας:</h3>
+            <p>Δευτέρα - Παρασκευή: 9:00 πμ - 9:00 μμ</p>
+            <p>Σάββατο: 9:00 πμ - 5:00 μμ</p>
+            <p>Κυριακή και Επίσημες Αργίες: Κλειστά</p>
+        </div>
+    
+        <div class="contact-info">
+            <h3>Στοιχεία Επικοινωνίας:</h3>
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i> Π. Ραλλη 472, Νίκαια, 18451
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-phone-alt"></i> (210) 490-6060
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i> customersupport@golden-gym.gr
+            </div>
+        </div>
+
+        <p>Copyright &copy; 2024 <span class="highlight">GoldenGym</span> All Rights Reserved</p>
+    </footer>
+    
+    <script>
+        // Toggle the sidebar menu
+        function toggleMenu() {
+            document.getElementById("sidebar").classList.toggle("open");
+            document.body.classList.toggle("open-menu");
+        }
+
+        // Close the sidebar menu
+        function closeMenu() {
+            document.getElementById("sidebar").classList.remove("open");
+            document.body.classList.remove("open-menu");
+        }
+    
+        document.querySelectorAll('.image-wrapper').forEach(function (imageWrapper) {
+            imageWrapper.addEventListener('click', function () {
+                const name = imageWrapper.getAttribute('data-name');
+                const description = imageWrapper.getAttribute('data-description');
+        
+                // Δημιουργία του μικρού πλαισίου με την περιγραφή και το κουμπί κλεισίματος
+                const descriptionBox = document.createElement('div');
+                descriptionBox.classList.add('description-box');
+                descriptionBox.innerHTML = `
+                    <strong>${name}:</strong> <pre>${description}</pre>
+                    <button class="close-btn">Χ</button>`;
+
+                // Εμφάνιση του πλαισίου
+                document.body.appendChild(descriptionBox);
+
+                // Στυλ για το μικρό πλαίσιο και το κουμπί κλεισίματος
+                const style = document.createElement('style');
+                style.innerHTML = `
+                .description-box {
+                    font-family: 'Times New Roman', Times, serif;
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background-color: #333;
+                    color: white;
+                    padding: 30px;
+                    border-radius: 15px; /* Μαλακότερο στρογγυλό σχήμα */
+                    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1); /* Μαλακή σκίαση */
+                    font-size: 1.3em;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    width: 90%;
+                    max-width: 800px;
+                    max-height: 600px;
+                    overflow-y: auto;
+                    white-space: pre-wrap;
+                    opacity: 0; /* Ξεκινάμε με το πλαίσιο αόρατο για το εφέ εισόδου */
+                    animation: fadeIn 0.5s ease-in-out forwards; /* Εφέ εισόδου */
+                }
+
+                .close-btn {
+                    background-color: #eeb31d;
+                    color: white;
+                    border: none;
+                    font-size: 1.8em;
+                    cursor: pointer;
+                    margin-left: 10px;
+                    padding: 5px 10px;
+                    border-radius: 50%; /* Κυκλικό κουμπί */
+                    transition: background-color 0.3s, transform 0.3s;
+                    align-self: flex-end;
+                }
+
+                .close-btn:hover {
+                    background-color: #d69b1a; /* Ανοιχτότερο χρυσό για το hover */
+                    transform: scale(1.1); /* Εφέ μεγέθυνσης */
+                }
+
+                @keyframes fadeIn {
+                    0% {
+                        opacity: 0;
+                        transform: translate(-50%, -50%) scale(0.8); /* Εφέ μεγέθυνσης κατά την είσοδο */
+                    }
+                    100% {
+                        opacity: 1;
+                        transform: translate(-50%, -50%) scale(1);
+                    }
+                }`;
+                document.head.appendChild(style);
+
+                // Κλείσιμο του πλαισίου όταν πατηθεί το κουμπί "Χ"
+                descriptionBox.querySelector('.close-btn').addEventListener('click', function () {
+                    descriptionBox.remove();
+                    style.remove();
+                });
+            });
+        });
+    </script>
+</body>
+</html>

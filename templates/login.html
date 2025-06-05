@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #eeb31d;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 25px;
+            cursor: pointer;
+            color: #1b1a1a;
+        }
+        .close-button:hover {
+            color: #e2e2e2;
+        }
+        h1 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-size: 16px;
+            color: #555;
+            text-align: left;
+            margin-bottom: 5px;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            font-family: 'Times New Roman', Times, serif;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        p {
+            font-size: 14px;
+            color: #666;
+        }
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <button class="close-button" onclick="window.location.href='/index.html'">&times;</button>
+        <h1>Login</h1>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="register.html">Register here</a></p>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+
+            const messageDiv = document.getElementById('message');
+
+            // Καθάρισμα προηγούμενου μηνύματος
+            messageDiv.textContent = '';
+            messageDiv.className = 'flash-message';
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    messageDiv.classList.add('success');
+                    messageDiv.textContent = result.message;
+
+                    setTimeout(() => {
+                        if (result.isAdmin) {
+                            window.location.href = '/admin/dashboard';
+                        } else if (result.isUser) {
+                            window.location.href = '/user/dashboard';
+                        }
+                    }, 1000); // 1 δευτερόλεπτο καθυστέρηση
+                } else {
+                    messageDiv.classList.add('danger');
+                    messageDiv.textContent = result.error;
+                }
+            } catch (error) {
+                messageDiv.classList.add('danger');
+                messageDiv.textContent = 'An error occurred. Please try again.';
+            }
+
+            // Απόκρυψη μηνύματος μετά από 5 δευτερόλεπτα
+            setTimeout(() => {
+                messageDiv.textContent = '';
+                messageDiv.className = '';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

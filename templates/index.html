@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golden Gym</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f1d074;        
+        }
+        h1 {
+            color: #333;
+            margin-top: 50px;
+            font-size: 50px; 
+            font-weight: bold;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .image-slider {
+            width: 100%;
+            max-width: 1000px;
+            height: 600px;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .image-slider img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        button {
+            font-family: 'Times New Roman', Times, serif;
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 10px;
+            border: none;
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        .services-section {
+            margin-top: 50px;
+            text-align: center;
+        }
+        .services-section h2 {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            position: relative;
+            text-align: left;
+            padding-left: 20px;
+        }
+        .services-section h2::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: rgb(226, 155, 0);
+            margin-top: 5px;
+        }
+        .services-section .image-wrapper {
+            position: relative;
+            display: inline-block;
+            margin: 15px;
+            max-width: 300px;
+            width: 300px;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .services-section .image-wrapper:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .services-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+        .services-section .image-wrapper:hover img {
+            transform: scale(1.1);
+        }
+        .image-caption {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(50, 50, 50, 0.8);
+            color: white;
+            padding: 8px 12px;
+            font-size: 14px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .additional-content {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Golden Gym</h1>
+
+        <!-- Δημιουργία του Image Slider -->
+        <div class="image-slider">
+            <img src="https://cdn.shopify.com/s/files/1/0141/5242/t/16/assets/fitsix-4-bright_LIQo.jpg?v=162012172235" alt="Gym Image 1">
+            <img src="https://i0.wp.com/goldsgym.in/wp-content/uploads/2023/12/compress-strong-man-training-gym-min-scaled.jpg?fit=2560%2C1707&ssl=1" alt="Gym Image 2">
+            <img src="https://assets.cdn.filesafe.space/edb88dxzcuAksVIv5hSy/media/643031eae6ba24f50a0f8b0c.webp" alt="Gym Image 3">
+        </div>
+
+        <div class="buttons">
+            <button onclick="window.location.href='/login'">Log In</button>
+            <button onclick="window.location.href='/register'">Sign Up</button>
+        </div>
+        <div class="services-section">
+            <h2>Our Services</h2>
+            <div class="image-wrapper">
+                <img src="https://blog.davidlloyd.co.uk/wp-content/uploads/2024/02/Reformer-Pilates.jpg" alt="Reformer Pilates">
+                <div class="image-caption">Reformer Pilates</div>
+            </div>
+            <div class="image-wrapper">
+                <img src="https://alg.edu.au/wp-content/uploads/2024/04/CIV-Yoga-Hero-Image-2.0.jpg" alt="Yoga">
+                <div class="image-caption">Yoga</div>
+            </div>
+            <div class="image-wrapper">
+                <img src="https://jccindy.org/wp-content/uploads/2022/06/zumba-classes-at-jcc.webp" alt="Zumba">
+                <div class="image-caption">Zumba</div>
+            </div>
+            <div class="image-wrapper">
+                <img src="https://www.physiomart.gr/images/TI-EINAI-TO-CROSSFIT.jpg" alt="CrossFit">
+                <div class="image-caption">CrossFit</div>
+            </div>
+            <div class="image-wrapper">
+                <img src="https://www.physiomart.gr/images/IMANTES-TRX.jpg" alt="TRX">
+                <div class="image-caption">TRX</div>
+            </div>
+            <div class="image-wrapper">
+                <img src="https://assets.newyorksportsclubs.com/wp-content/uploads/2023/11/09170344/PT_Single-slider-Image-1719-x-960.png" alt="Personal Training">
+                <div class="image-caption">Personal Training</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="additional-content">
+        <div>
+            <h3>Ωράριο Λειτουργίας:</h3>
+            <p>Δευτέρα - Παρασκευή: 9:00 πμ - 9:00 μμ</p>
+            <p>Σάββατο: 9:00 πμ - 5:00 μμ</p>
+            <p>Κυριακή και Επίσημες Αργίες: Κλειστά</p>
+        </div>
+    
+        <div >
+            <h3>Στοιχεία Επικοινωνίας:</h3>
+            <div>
+                <i class="fas fa-map-marker-alt"></i> Π. Ραλλη 472, Νίκαια, 18451
+            </div>
+            <div>
+                <i class="fas fa-phone-alt"></i> (210) 490-6060
+            </div>
+            <div>
+                <i class="fas fa-envelope"></i> customersupport@golden-gym.gr
+            </div>
+        </div>
+        <h2>About Us</h2>
+        <p>We offer top-notch gym facilities and training programs. Join us today!</p>
+        <p>Whether you're into strength training, cardio, or yoga, we have everything you need.</p>
+    </div>
+
+    <script>
+        let currentImageIndex = 0;
+        const images = document.querySelectorAll('.image-slider img');
+
+        function changeImage() {
+            images[currentImageIndex].style.opacity = 0;
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            images[currentImageIndex].style.opacity = 1;
+        }
+
+        setInterval(changeImage, 3000);
+        images[0].style.opacity = 1;
+    </script>
+</body>
+</html>

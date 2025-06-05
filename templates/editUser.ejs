@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+            margin: 40px auto;
+        }
+        h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        form div {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-size: 14px;
+            color: #555;
+            margin-top: 20px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        button {
+            font-family: 'Times New Roman', Times, serif;
+            padding: 8px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button.update {
+            background-color: #333;
+            color: #fff;
+        }
+        button.update:hover {
+            background-color: #333;
+        }
+        button.back {
+            font-weight: bold;
+            background-color: #007bff;
+            color: #fff;
+            display: block;
+            text-align: center;
+            margin: 20px auto 0;
+        }
+        button.back:hover {
+            background-color: #0056b3;
+        }
+        small {
+            display: block;
+            font-size: 12px;
+            color: #777;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit User: <%= user.username %></h1>
+            
+        <% if (flashMessage) { %>
+            <div class="flash-message <%= flashMessage.type %>">
+                <%= flashMessage.text %>
+            </div>
+            <script>
+                setTimeout(function () {
+                    const flashMessage = document.querySelector('.flash-message');
+                    if (flashMessage) {
+                        flashMessage.style.display = 'none';
+                    }
+                }, 5000);
+            </script>
+        <% } %>
+
+        <form id="editForm" action="/admin/update-user/<%= user._id %>" method="POST">
+            <div>
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" name="firstName" value="<%= user.firstName %>" required>
+            </div>
+            <div>
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" value="<%= user.lastName %>" required>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="<%= user.email %>" required>
+            </div>
+            <div>
+                <label for="country">Country:</label>
+                <select id="country" name="country" required>
+                    <option value="" disabled>Select a country</option>
+                </select>
+            </div>
+            <div>
+                <label for="city">City:</label>
+                <select id="city" name="city" required>
+                    <option value="" disabled>Select a city</option>
+                </select>
+            </div>
+            <div>
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" value="<%= user.address %>" required>
+            </div>
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" value="<%= user.username %>" required>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter new password">
+                <small>(Leave blank if you don't want to change the password)</small>
+            </div>
+            <div>
+                <label for="role">Role:</label>
+                <select id="role" name="role" required>
+                    <option value="user" <%= user.role === 'user' ? 'selected' : '' %>>User</option>
+                    <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>Admin</option>
+                </select>
+            </div>
+            <button type="submit" class="update">Update User</button>
+        </form>
+        <button class="back" onclick="window.location.href='/admin/manage-users'">Back to Manage Users</button>
+    </div>
+    <script>
+        const countriesUrl = "https://countriesnow.space/api/v0.1/countries";
+
+        async function fetchCountries() {
+            try {
+                const response = await fetch(countriesUrl);
+                const data = await response.json();
+                populateCountries(data.data);
+            } catch (error) {
+                console.error("Error fetching countries:", error);
+            }
+        }
+
+        function populateCountries(countries) {
+            const countrySelect = document.getElementById("country");
+            const userCountry = "<%= user.country %>";
+            countries.forEach((country) => {
+                const option = document.createElement("option");
+                option.value = country.country;
+                option.textContent = country.country;
+                if (country.country === userCountry) {
+                    option.selected = true;
+                }
+                countrySelect.appendChild(option);
+            });
+
+            countrySelect.addEventListener("change", (event) => {
+                const selectedCountry = event.target.value;
+                populateCities(countries, selectedCountry);
+            });
+
+            populateCities(countries, userCountry);
+        }
+
+        function populateCities(countries, selectedCountry) {
+            const citySelect = document.getElementById("city");
+            const userCity = "<%= user.city %>";
+            citySelect.innerHTML = '<option value="" disabled>Select a city</option>';
+
+            const country = countries.find((c) => c.country === selectedCountry);
+            if (country && country.cities) {
+                country.cities.forEach((city) => {
+                    const option = document.createElement("option");
+                    option.value = city;
+                    option.textContent = city;
+                    if (city === userCity) {
+                        option.selected = true;
+                    }
+                    citySelect.appendChild(option);
+                });
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", fetchCountries);
+    </script>
+</body>
+</html>
